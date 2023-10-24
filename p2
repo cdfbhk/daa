@@ -1,0 +1,46 @@
+import heapq
+
+class Node:
+    def __init__(self, freq, symbol, left=None, right=None):
+        self.freq = freq
+        self.symbol = symbol
+        self.left = left
+        self.right = right
+        self.huff = ''
+
+    def __lt__(self, other):
+        return self.freq < other.freq
+
+    def print_codes(self, val=''):
+        if self.left is None and self.right is None:
+            print(f"{self.symbol}: {val}")
+            return
+        self.left.print_codes(val + "0")
+        self.right.print_codes(val + "1")
+
+def huffman_coding(text):
+    frequency = {}
+    for char in text:
+        if char in frequency:
+            frequency[char] += 1
+        else:
+            frequency[char] = 1
+
+    priority_queue = []
+    for key in frequency:
+        priority_queue.append(Node(frequency[key], key))
+    heapq.heapify(priority_queue)
+
+    while len(priority_queue) > 1:
+        left = heapq.heappop(priority_queue)
+        right = heapq.heappop(priority_queue)
+        combined_freq = left.freq + right.freq
+        combined_symbol = left.symbol + right.symbol
+        new_node = Node(combined_freq, combined_symbol, left, right)
+        heapq.heappush(priority_queue, new_node)
+
+    root = priority_queue[0]
+    root.print_codes()
+
+text = "Hello, Huffman coding!"
+huffman_coding(text)
