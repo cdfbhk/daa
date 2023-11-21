@@ -1,5 +1,4 @@
 
-#DAA LAB 5
 def n_queens(n):
     def is_safe(row, col):
         return col not in columns and (row + col) not in pos_diagonals and (row - col) not in neg_diagonals
@@ -41,4 +40,8 @@ def n_queens(n):
         print()
 
 if __name__ == "__main__":
-    n_queens(8)  # u can change this number 
+    # Take the size of the chessboard dynamically from the user
+    chessboard_size = int(input("Enter the size of the chessboard (N x N): "))
+    n_queens(chessboard_size)
+
+  
