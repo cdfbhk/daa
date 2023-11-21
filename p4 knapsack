@@ -19,3 +19,10 @@ while True:
     capacity = int(input("Enter the maximum weight: "))
     maximum_value = knapsack(values, weights, capacity)
     print('The maximum value of items that can be carried:', maximum_value)
+
+#sample output 
+Enter the number of items: 4
+Enter values of items:50 100 150 200
+Enter weights of items:8 16 32 40
+Enter the maximum weight: 64
+The maximum value of items that can be carried: 350
