@@ -1,46 +1,66 @@
+
 import heapq
-
-class Node:
+ 
+class node:
     def __init__(self, freq, symbol, left=None, right=None):
-        self.freq = freq
-        self.symbol = symbol
-        self.left = left
-        self.right = right
-        self.huff = ''
-
-    def __lt__(self, other):
-        return self.freq < other.freq
-
-    def print_codes(self, val=''):
-        if self.left is None and self.right is None:
-            print(f"{self.symbol}: {val}")
-            return
-        self.left.print_codes(val + "0")
-        self.right.print_codes(val + "1")
-
-def huffman_coding(text):
-    frequency = {}
-    for char in text:
-        if char in frequency:
-            frequency[char] += 1
-        else:
-            frequency[char] = 1
-
-    priority_queue = []
-    for key in frequency:
-        priority_queue.append(Node(frequency[key], key))
-    heapq.heapify(priority_queue)
-
-    while len(priority_queue) > 1:
-        left = heapq.heappop(priority_queue)
-        right = heapq.heappop(priority_queue)
-        combined_freq = left.freq + right.freq
-        combined_symbol = left.symbol + right.symbol
-        new_node = Node(combined_freq, combined_symbol, left, right)
-        heapq.heappush(priority_queue, new_node)
-
-    root = priority_queue[0]
-    root.print_codes()
-
-text = "Hello, Huffman coding!"
-huffman_coding(text)
+        self.freq = freq      # frequency of symbol
+        self.symbol = symbol  # symbol name (character)
+        self.left = left      # node left of current node
+        self.right = right    
+        self.huff = ''        
+         
+    def __lt__(self, nxt):
+        return self.freq < nxt.freq
+         
+ 
+def printNodes(node, val=''):
+     
+    # huffman code for current node
+    newVal = val + str(node.huff)
+ 
+    # if node is not an edge node
+    # then traverse inside it
+    if(node.left):
+        printNodes(node.left, newVal)
+    if(node.right):
+        printNodes(node.right, newVal)
+ 
+        # if node is edge node then
+        # display its huffman code
+    if(not node.left and not node.right):
+        print(f"{node.symbol} -> {newVal}")
+ 
+ 
+# characters for huffman tree
+chars = ['a', 'b', 'c', 'd', 'e', 'f']
+ 
+# frequency of characters
+freq = [ 5, 9, 12, 13, 16, 45]
+ 
+# list containing unused nodes
+nodes = []
+ 
+# converting characters and frequencies
+# into huffman tree nodes
+for x in range(len(chars)):
+    heapq.heappush(nodes, node(freq[x], chars[x]))
+ 
+while len(nodes) > 1:
+     
+    # sort all the nodes in ascending order
+    # based on their frequency
+    left = heapq.heappop(nodes)
+    right = heapq.heappop(nodes)
+ 
+    # assign directional value to these nodes
+    left.huff = 0
+    right.huff = 1
+ 
+    # combine the 2 smallest nodes to create
+    # new node as their parent
+    newNode = node(left.freq+right.freq, left.symbol+right.symbol, left, right)
+ 
+    heapq.heappush(nodes, newNode)
+ 
+# Huffman Tree is ready!
+printNodes(nodes[0])
